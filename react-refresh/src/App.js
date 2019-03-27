@@ -12,12 +12,15 @@ class App extends Component {
     showPersons: false
   }
 
+  // becuse the default state is not set to show persons on load -- showpersons: false, the togglepersonhandler is going to show the persons on click
   togglePersonsHandler =() => {
     const doesShow = this.state.showPersons;
     this.setState({showPersons: !doesShow});
   }
 
   nameChangedHandler = (event, id) => {
+    // p is person but we can't resuse the name
+    // if the id that is passed in matches, return the id
     const personIndex = this.state.persons.findIndex(p => {
       return p.id === id;
     });

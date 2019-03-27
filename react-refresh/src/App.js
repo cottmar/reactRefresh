@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Radium, { StyleRoot } from 'radium';
 import './App.css';
 import Person from './Person/Person';
 
@@ -6,7 +7,9 @@ class App extends Component {
   state = {
     persons: [
       { id: 'unique', name: 'Birdie', age: 5},
-      { id: 'younique', name: 'Billie Jean', age: 7}
+      { id: 'younique', name: 'Billie Jean', age: 7},
+      { id: 'yonique', name: 'Cara', age: 30}
+
     ],
     otherState: 'some other value',
     showPersons: false
@@ -48,11 +51,16 @@ class App extends Component {
 
   render() {
     const style= {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
+      color: 'white',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
     }
 
     let persons = null;
@@ -70,12 +78,29 @@ class App extends Component {
           })}
         </div>
       );
+
+      style.backgroundColor = 'red';
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      }
+    }
+    // 'red bold'
+    // let classes = ['red', 'bold'].join(' ');
+    
+    let classes = [];
+    if (this.state.persons.length <= 2) {
+      classes.push('red'); // classes = ['red];
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push('bold') // classes = ['red', 'bold'];
     }
 
     return (
+      <StyleRoot>
       <div className="App">
         <h1>Hi, I'm a react app.</h1>
-        <p>It works</p>
+        <p className={classes.join(' ')}>this is really working</p>
         <button 
           style={style}
           onClick={this.togglePersonsHandler}>Toggle Persons
@@ -83,8 +108,9 @@ class App extends Component {
         {/* // reference to either render nothing or persons */}
         {persons}
       </div>
+    </StyleRoot>
     );
   }
 }
 
-export default App;
+export default Radium(App);

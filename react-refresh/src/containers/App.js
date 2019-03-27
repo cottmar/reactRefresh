@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import './App.css';
-import Person from './Person/Person';
+import classes from './App.css';
+import Person from '../components/Persons/Person/Person';
 
 class App extends Component {
   state = {
     persons: [
       { id: 'unique', name: 'Birdie', age: 5},
-      { id: 'younique', name: 'Billie Jean', age: 7}
+      { id: 'younique', name: 'Billie Jean', age: 7},
+      { id: 'yonique', name: 'Cara', age: 30}
+
     ],
     otherState: 'some other value',
     showPersons: false
@@ -47,15 +49,9 @@ class App extends Component {
   }
 
   render() {
-    const style= {
-      backgroundColor: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    }
 
     let persons = null;
+    let btnClass = ' ';
 
     if (this.state.showPersons) {
       persons = (
@@ -70,14 +66,26 @@ class App extends Component {
           })}
         </div>
       );
+
+      btnClass = classes.Red
+    }
+    // 'red bold'
+    // let classes = ['red', 'bold'].join(' ');
+    
+    let assignedClasses = [];
+    if (this.state.persons.length <= 2) {
+      assignedClasses.push( classes.red); // classes = ['red];
+    }
+    if (this.state.persons.length <= 1) {
+      assignedClasses.push( classes.bold); // classes = ['red', 'bold'];
     }
 
     return (
-      <div className="App">
+      <div className={classes.App}>
         <h1>Hi, I'm a react app.</h1>
-        <p>It works</p>
-        <button 
-          style={style}
+        <p className={assignedClasses.join(' ')}>this is really working</p>
+        <button
+          className={btnClass}
           onClick={this.togglePersonsHandler}>Toggle Persons
         </button> 
         {/* // reference to either render nothing or persons */}

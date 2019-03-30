@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Aux from '../../../hoc/Aux';
 import classes from './Person.css';
 
-const person = (props) => {
-  return (
-    <div className={classes.person}>
-    <p onClick={props.click}>I'm {props.name} and I am {props.age} years old</p>
-    <p>{props.children}</p>
-    <input type="text" onChange={props.changed} value={props.name}/>
-    </div>
-  )
-};
+// Fragment works the same as the Aux component -- gets rid of needing a div
 
-export default person;
+class Person extends Component {
+  render() {
+    console.log('[Person.js] rendering...');
+
+    return (
+    <Aux>
+    <p onClick={this.props.click}>
+      I'm {this.props.name} and I am {this.props.age} years old
+    </p>
+    <p key="i2">{this.props.children}</p>
+    <input
+      key="i3"
+      type="text" 
+      onChange={this.props.changed} 
+      value={this.props.name}
+    />
+    </Aux>
+    );
+  }
+}
+
+export default Person;

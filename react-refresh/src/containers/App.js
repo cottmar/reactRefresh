@@ -1,23 +1,47 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from '../components/Persons/Person/Person';
+// import Person from '../components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Aux';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+  }
   state = {
     persons: [
       { id: 'unique', name: 'Birdie', age: 5},
       { id: 'younique', name: 'Billie Jean', age: 7},
       { id: 'yonique', name: 'Cara', age: 30}
-
     ],
     otherState: 'some other value',
-    showPersons: false
+    showPersons: false,
+    showCockpit: true
   }
 
-  // becuse the default state is not set to show persons on load -- showpersons: false, the togglepersonhandler is going to show the persons on click
-  togglePersonsHandler =() => {
-    const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow});
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
+  }
+
+  // componentWillMount() {
+  //   console.log('[App.js] componentWillMount')
+  // }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount')
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[App.js] shouldComponentUpdate');
+    return true;
+  }
+
+  componentDidUpdate() {
+    console.log('[App.js] componentDidUpdate');
   }
 
   nameChangedHandler = (event, id) => {
@@ -48,51 +72,43 @@ class App extends Component {
     this.setState({persons: persons});
   }
 
-  render() {
+    // becuse the default state is not set to show persons on load -- showpersons: false, the togglepersonhandler is going to show the persons on click
+    togglePersonsHandler =() => {
+      const doesShow = this.state.showPersons;
+      this.setState({showPersons: !doesShow});
+    }
 
+  render() {
+    console.log('[App.js] render');
     let persons = null;
-    let btnClass = ' ';
 
     if (this.state.showPersons) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <Person
-              click={() => this.deletePersonHandler(index)}
-               name={person.name}
-               age={person.age}
-               key={person.id}
-               changed={(event) => this.nameChangedHandler(event, person.id)} />
-          })}
-        </div>
+      persons = (<Persons
+            persons={this.state.persons} 
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler}
+      />
       );
-
-      btnClass = classes.Red
-    }
-    // 'red bold'
-    // let classes = ['red', 'bold'].join(' ');
-    
-    let assignedClasses = [];
-    if (this.state.persons.length <= 2) {
-      assignedClasses.push( classes.red); // classes = ['red];
-    }
-    if (this.state.persons.length <= 1) {
-      assignedClasses.push( classes.bold); // classes = ['red', 'bold'];
     }
 
     return (
-      <div className={classes.App}>
-        <h1>Hi, I'm a react app.</h1>
-        <p className={assignedClasses.join(' ')}>this is really working</p>
-        <button
-          className={btnClass}
-          onClick={this.togglePersonsHandler}>Toggle Persons
-        </button> 
-        {/* // reference to either render nothing or persons */}
-        {persons}
-      </div>
-    );
+      <Aux classes={classes.App}>
+      <button onClick={() => {
+        this.setState({ showCockpit: false });
+      }}
+      >Remove Cockpit</button>
+      {this.state.showCockpit ? (
+        <Cockpit 
+          title={this.props.appTitle}
+          showPersons={this.state.showPersons}
+          personsLength={this.state.persons.length}
+          clicked={this.togglePersonsHandler} />
+      ) : null}
+          {/* // reference to either render nothing or persons */}
+          {persons}
+        </Aux>
+      );
+    }
   }
-}
 
-export default App;
+export default withClass(App, classes.App);

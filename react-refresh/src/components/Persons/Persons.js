@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import Person from './Person/Person';
 
-
  class Persons extends PureComponent {
   // static getDerivedStateFromProps(props, state) {
   //   console.log('[Persons.js] getDerivedStateFromProps');
@@ -45,7 +44,8 @@ import Person from './Person/Person';
        age={person.age}
        // key is required so react can update and reorder elements as might be required by the app
        key={person.id}
-       changed={(event) => this.props.changed(event, person.id)} 
+       changed={(event) => this.props.changed(event, person.id)}
+       isAuth={this.props.isAuthenticated} 
       />
     );
   });
